@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """ Personal data"""
+import logging
 import re
 from typing import List
-import logging
 
 
 def filter_datum(
@@ -16,9 +16,9 @@ def filter_datum(
         )
     return message
 
+
 class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class
-        """
+    """Redacting Formatter class"""
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
@@ -29,5 +29,8 @@ class RedactingFormatter(logging.Formatter):
         super(RedactingFormatter, self).__init__(self.FORMAT)
 
     def format(self, record: logging.LogRecord) -> str:
-        """ method to filter values in incoming log records using filter_datum """
-        return filter_datum(self.fields, self.REDACTION, super().format(record), self.SEPARATOR)
+        """method to filter values in incoming log records using
+        filter_datum"""
+        return filter_datum(
+            self.fields, self.REDACTION, super().format(record), self.SEPARATOR
+        )
