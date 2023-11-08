@@ -38,7 +38,7 @@ def unauthorized() -> str:
 @app_views.route("/forbidden", strict_slashes=False)
 def forbidden() -> str:
     """
-    GET /api/v1/unauthorized
+    GET /api/v1/forbidden
     Aborts(403)
     """
     abort(403)
