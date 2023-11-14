@@ -50,7 +50,8 @@ class DB:
             raise InvalidRequestError
         session = self._session
         try:
-            return session.query(User).filter_by(**kwargs).one()
+            user = session.query(User).filter_by(**kwargs).one()
+            return user
         except Exception:
             raise NoResultFound
 
