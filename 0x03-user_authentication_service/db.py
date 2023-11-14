@@ -9,6 +9,8 @@ from sqlalchemy.orm.session import Session
 
 from user import Base, User
 
+VALID = ["id", "email", "hashed_password", "session_id", "reset_token"]
+
 
 class DB:
     """DB class"""
@@ -42,11 +44,22 @@ class DB:
         """
         Finds a User in the Database.
         """
-        valid = ["id", "email", "hashed_password", "session_id", "reset_token"]
-        if not kwargs or any(i not in valid for i in kwargs):
+        if not kwargs or any(i not in VALID for i in kwargs):
             raise InvalidRequestError
         session = self._session
         try:
             return session.query(User).filter_by(**kwargs).one()
         except Exception:
             raise NoResultFound
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        updating a user in the database
+        """
+        session = self._session
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if key not in VALID:
+                raise ValueError
+            setattr(user, key, value)
+        session.commit()
